@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/redux/hook"
 import { Button } from "../ui/button"
-import { removeTodo } from "@/redux/features/todoSlice";
+import { removeTodo, toggleComplete } from "@/redux/features/todoSlice";
 
 type TodoCardPropsType = {
     id: string,
@@ -12,12 +12,16 @@ type TodoCardPropsType = {
 const TodoCard = ({ id, title, description, complete }: TodoCardPropsType) => {
     const dispatch = useAppDispatch();
 
+    const handleToggle = (id: string) => {
+        dispatch(toggleComplete(id));
+    }
+
     return (
         <div className="flex justify-between items-center bg-white rounded-xl p-2.5 border-2">
-            <input type="checkbox" className="cursor-pointer" />
+            <input onClick={() => handleToggle(id)} type="checkbox" className="cursor-pointer" />
             <p>{title}</p>
             <p>{description}</p>
-            <p>{complete === true ? <span className={complete === true ? "text-green-500 font-semibold" : "text-red-500 "}>Complete</span> : <span className={complete === false ? "text-red-500 font-semibold" : "text-green-500 font-semibold"}>Pending</span>}</p>
+            <p>{complete === true ? <span className={complete === true ? "text-green-500 font-semibold" : "text-red-500 "}>Done</span> : <span className={complete === false ? "text-red-500 font-semibold" : "text-green-500 font-semibold"}>Pending</span>}</p>
             <div className="space-x-5">
                 <Button className="bg-[#DC02C3] text-white rounded-xl hover:bg-[#dc02c3be] hover:duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-5">
