@@ -2,9 +2,18 @@ import { useAppSelector } from "@/redux/hook";
 import { Button } from "../ui/button"
 import AddTodoModal from "./AddTodoModal"
 import TodoCard from "./TodoCard"
+import { useGetTodoQuery } from "@/redux/api/api";
+import TodoInfo from "./TodoInfo";
 
 const TodoContainer = () => {
     const todo = useAppSelector((state) => state.todo.todo);
+    const { data, isLoading, isError } = useGetTodoQuery(undefined);
+
+    if (isLoading) {
+        return <p className="text-center font-semibold text-2xl mt-5 bg-primary-gradient inline p-3 text-white">Loading...</p>
+    } else if (isError) {
+        return <p className="text-center font-semibold text-2xl mt-5">Something went wrong...</p>
+    }
 
     return (
         <div className="bg-white h-full">
@@ -22,6 +31,9 @@ const TodoContainer = () => {
                             </div>
                     }
                 </div>
+            </div>
+            <div className="bg-primary-gradient p-1 rounded-xl mt-10">
+                <TodoInfo data={data.data} />
             </div>
         </div>
     )
